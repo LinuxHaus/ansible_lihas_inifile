@@ -22,12 +22,20 @@ Dictionaries with random name and entries `ctl` and `value`
 ### %.config.inifile.INISHORT
 INISHORT is just any identifiert, possibly giving a hint what we talk about
 The name of the inifile, e.g. /etc/php/8.2/fpm/conf.d/99-memory.ini
-### %.config.inifile.INISHORT.entries: []
+### %.config.inifile.INISHORT.path:
+Path and Name of the ini-File to create
+### %.config.inifile.INISHORT.command: []
+List of commands to execute on change
+### %.config.inifile.INISHORT.sections: []
+List of dictionaries of sections
+### %.config.inifile.INISHORT.sections[]name:
+Name of the ini-Section
+### %.config.inifile.INISHORT.sections[]entries: []
 List of entries
-### %.config.inifile.INISHORT.entries[]section
-### %.config.inifile.INISHORT.entries[]option
-### %.config.inifile.INISHORT.entries[]value
+### %.config.inifile.INISHORT.sections[]entries[]option
+### %.config.inifile.INISHORT.sections[]entries[]value
 The section, option and value
+
 
 Dependencies
 ------------
