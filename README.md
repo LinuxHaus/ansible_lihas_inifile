@@ -1,7 +1,9 @@
 Role Name
 =========
 
-set inifile values
+set inifile values and eventually run commands if values got changed
+
+Does so by copying a template. Everything in there before will be overwritten.
 
 Requirements
 ------------
