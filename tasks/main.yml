@@ -1,0 +1,53 @@
+---
+- name: Mark lihas_inifile done
+  ansible.builtin.set_fact:
+    lihas_inifile_done: true
+- name: Include variables
+  ansible.builtin.include_role:
+    name: lihas_variables
+  when: configspaces is not defined
+
+- name: Combine inifile, init
+  ansible.builtin.set_fact:
+    lihas_inifiles: {}
+- name: Combine inifile, expand with configspaces
+  ansible.builtin.set_fact:
+    lihas_inifiles: "{{ lihas_inifiles | combine(hostvars[inventory_hostname][item]['config']['inifile'] | default({})) }}"
+  loop: "{{ configspaces }}"
+- name: Debug lihas_inifiles
+  ansible.builtin.debug:
+    var: lihas_inifiles
+    verbosity: 1
+- name: "Set inifile {{ inifile.key }}"
+  ansible.builtin.template:
+    src: "inifile.j2"
+    dest: "{{ inifile.value.path }}"
+    mode: "644"
+    owner: root
+    group: root
+  register: inifile_results
+  loop: "{{ lihas_inifiles | dict2items() }}"
+  loop_control:
+    loop_var: inifile
+  notify: Handler lihas_cmd_inifile
+- name: Debug inifile_results
+  ansible.builtin.debug:
+    var: inifile_results
+    verbosity: 1
+- name: Debug results, list changed inifile keys
+  ansible.builtin.debug:
+    msg: "{{ inifile_results.results | selectattr('changed', 'equalto', true) | map(attribute='inifile') | map(attribute='key') }}"
+    verbosity: 1
+- name: Select commands
+  ansible.builtin.debug:
+    var: item.value.command
+  loop: "{{ lihas_inifiles | dict2items() }}"
+- name: Select commands
+  ansible.builtin.set_fact:
+    lihas_inifile_cmd: "{{ lihas_inifile_cmd | default([]) + item.value.command | default([]) }}"
+  loop: "{{ lihas_inifiles | dict2items() }}"
+- name: Debug lihas_inifile_cmd
+  ansible.builtin.debug:
+    var: lihas_inifile_cmd
+    verbosity: 1
+...

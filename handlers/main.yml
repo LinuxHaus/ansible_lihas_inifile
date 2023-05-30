@@ -1,0 +1,5 @@
+---
+- name: Handler lihas_cmd_inifile
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+  loop: "{{ lihas_inifile_cmd | default([]) }}"

@@ -1,0 +1,8 @@
+# ansible generated
+# Key %.config.inifile.{{ inifile.key }}:
+{% for section in inifile.value.sections | default([]) %}
+[{{ section.name }}]
+{%   for entry in section.entries | default([]) %}
+{{ entry.option | default('MISSING') }} = {{ entry.value |default('MISSING') }}
+{%   endfor %}
+{% endfor %}

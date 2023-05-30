@@ -1,0 +1,18 @@
+---
+- name: Debug inifile
+  ansible.builtin.debug:
+    var: inifile
+    verbosity: 1
+- name: "Set inifile {{ inifile.key }}"
+  ansible.builtin.template:
+    src: "inifile.j2"
+    dest: "{{ inifile.value.path }}"
+    mode: "644"
+    owner: root
+    group: root
+  register: inifile_results
+- name: Debug inifile_results
+  ansible.builtin.debug:
+    var: inifile_results
+    verbosity: 1
+...
